@@ -62,6 +62,7 @@ t_tree	*parse_tokens(t_token **tokens);
 t_tree	*tree_node(t_token_type type);
 int	count_content(t_token *tokens);
 t_tree	*file_node(t_token *token);
+int	init_shell_env(t_env *env, char **orig_env);
 //void print_tree(t_tree *root, int level);
 //void print_tokens(t_token *tokens_list);
 

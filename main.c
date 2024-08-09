@@ -44,10 +44,11 @@ int	main(int argc, char **argv, char **env)
 	if (!my_env)
 		return (127);
 	if (!isatty(0) || !isatty(1))
-		return (0);
-	if (argc == 1)
+		return (free(env), 0);
+	if (argc == 1 && init_shell_env(my_env, env))
 	{
 		shell_exec_loop(my_env);
+		cleanup_shell(env);
 	}
 	return (0);
 }
