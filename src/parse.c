@@ -107,8 +107,8 @@ t_tree	*parse_tokens(t_token **tokens)
 	}
 	return (parse_red(&start));
 }
-/*
-void print_tree(t_tree *root, int level) {
+
+/*void print_tree(t_tree *root, int level) {
     if (root == NULL) {
         return;
     }

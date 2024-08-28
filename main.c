@@ -13,26 +13,31 @@
 
 void	shell_exec_loop(t_env *env)
 {
+	int	status;
 	char	*input;
 	t_token	*tokens;
 	t_tree	*tree;
 
 	while (42)
 	{
+		status = 0;
 		input = readline("Pip-Pop: ");
 		if (input == NULL)
 			break ;
 		if (input && *input)
 			add_history(input);
 		tokens = check_and_tokenize(input);
+		if (!tokens)
+			status = 258;
+		//print_parsed_env(env);
 		if (tokens)
 		{
 			tree =	parse_tokens(&tokens);
 			//print_tree(tree, 0);
-			//exec_command(tree, env);
-			//free_tree(tree);
+			//exec_command(tree, env, &status);
+			free_tree(tree);
 		}
-		//update_env();
+		//update_env(env, status, "?=");
 	}
 }
 
@@ -48,7 +53,7 @@ int	main(int argc, char **argv, char **env)
 	if (argc == 1 && init_shell_env(my_env, env))
 	{
 		shell_exec_loop(my_env);
-		cleanup_shell(env);
+		//cleanup_shell(env);
 	}
 	return (0);
 }

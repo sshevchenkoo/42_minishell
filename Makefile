@@ -4,7 +4,10 @@ CC = cc
 CFLAGS = -g 
 PRINTFDIR = ./ft_lib
 
-SRCS = 	main.c src/check_syntax.c src/check_syntax2.c src/tokenize.c src/tokenize2.c src/parse.c src/parse2.c
+SRCS = 	main.c src/check_syntax.c src/check_syntax2.c \
+		src/tokenize.c src/tokenize2.c src/parse.c \
+		src/parse2.c src/init_shell.c src/update_shell_env.c \
+		src/update_shell_env2.c src/shell_env_utils.c
 
 OBJS = $(SRCS:.c=.o)
 

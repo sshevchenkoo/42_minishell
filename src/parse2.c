@@ -55,3 +55,24 @@ t_tree	*file_node(t_token *token)
 	free(token);
 	return (node);
 }
+
+void	free_tree(t_tree *node)
+{
+	int	i;
+
+	i = 0;
+	if (!node)
+		return ;
+	if (node->type == WORD && node->content)
+	{
+		while (node->content && node->content[i])
+		{
+			free(node->content[i]);
+			i++;
+		}
+		free(node->content);
+	}
+	free_tree(node->left);
+	free_tree(node->right);
+	free(node);
+}
