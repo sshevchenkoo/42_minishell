@@ -85,13 +85,13 @@ void	init_default_var(t_env *env, int a)
 	replace_env_var("?=0", env);
 	a = find_var_env(env, "PWD");
 	pwd = get_current_pwd(100, 1, 2);
-	/*if (pwd)
+	if (pwd)
 	{
 		if (a >= 0)
 			remove_env_var(env, a);
 		set_new_pwd(pwd, env);
 		free(pwd);
-	}*/
+	}
 }
 
 int	init_shell_env(t_env *env, char **orig_env)
@@ -109,7 +109,7 @@ int	init_shell_env(t_env *env, char **orig_env)
 	return (status);
 }
 
-/*void	print_parsed_env(t_env *env)
+void	print_parsed_env(t_env *env)
 {
     int i = 0;
 
@@ -120,4 +120,4 @@ int	init_shell_env(t_env *env, char **orig_env)
         printf("  Value: %s\n", env->parsed_env[i][1]);
         i++;
     }
-}*/
+}

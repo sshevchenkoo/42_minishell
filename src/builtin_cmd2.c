@@ -1,5 +1,23 @@
 #include "../includes/minishell.h"
 
+int is_valid_echo_param(char *s)
+{
+	int i;
+
+	i = 0;
+	if (s && s[i] && s[i] == '-')
+	{
+		while (s[++i])
+		{
+			if (s[i] != 'n')
+				return (0);
+		}
+	}
+	else
+		return (0);
+	return (1);
+}
+
 int export_or_print(char **cmd)
 {
     int a;
@@ -76,6 +94,6 @@ void    set_new_pwd(char *pwd, t_env *env)
         pwd_export[1][m++] = pwd[i++];
     pwd_export[1][m] = '\0';
     pwd_export[2] = 0;
-    unset_or_export(pwd_export, env, NULL, &i);
+    unset_or_export(pwd_export, env, -1, &i);
     free_array(pwd_export);
 }

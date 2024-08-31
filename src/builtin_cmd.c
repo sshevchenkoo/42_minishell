@@ -1,23 +1,34 @@
 #include "../includes/minishell.h"
 
-void    print_export_to_fd(t_env *env, int *fd)
+int	echo_cmd(char **cmd, int out_fd)
 {
-    int i;
-    char    ***src;
+	int				i;
+	int				op_n;
 
-    i = 0;
-    while (env->parsed_env[i])
-        i++;
-    if (!i)
-        return ;
-    src = dup_env_structure(env, i, 'X', -1);
-    src[i] = 0;
-    src = sort_env(src, i);
-    print_export_vars(src, i, fd[1]);
-    free_env_var(src);
+	op_n = 0;
+	if (cmd[0] && cmd[1] && is_valid_echo_param(cmd[1]))
+		op_n = 1;
+	i = op_n + 1;
+	while (op_n && cmd[i] && is_valid_echo_param(cmd[i]))
+		i++;
+	if ((cmd[0] && cmd[i]) || ft_strlen(cmd[i]))
+	{
+		while (1)
+		{
+			ft_putstr_fd(cmd[i], out_fd);
+			i++;
+			if (cmd[i])
+				write(out_fd, " ", 1);
+			else
+				break ;
+		}
+	}
+	if (!op_n)
+		write(out_fd, "\n", 1);
+	return (0);
 }
 
-int	env_or_pwd(char *cmd, t_env *env, int i, int *fd)
+int	env_or_pwd(char *cmd, t_env *env, int i, int fd)
 {
 	int					a;
 	char				*pwd;
@@ -30,20 +41,20 @@ int	env_or_pwd(char *cmd, t_env *env, int i, int *fd)
 		else
 		{
 			while (env->parsed_env[++a])
-				print_env_var_to_fd(env->parsed_env[a][0], env->parsed_env[a][1], fd[1]);
+				env_var_fd(env->parsed_env[a][0], env->parsed_env[a][1], fd);
 		}
 		return (0);
 	}
-	pwd = get_current_pwd(100, 1, fd[1]);
+	pwd = get_current_pwd(100, 1, fd);
 	if (pwd)
 	{
-		ft_putendl_fd(pwd, fd[1]);
+		ft_putendl_fd(pwd, fd);
 		return (free(pwd), 0);
 	}
 	return (256);
 }
 
-char    **export_cmd(char **cmd, t_env *env, int *fd, int **i)
+char    **export_cmd(char **cmd, t_env *env, int fd, int **i)
 {
     int d;
     int m;
@@ -61,7 +72,7 @@ char    **export_cmd(char **cmd, t_env *env, int *fd, int **i)
         }
         else
         {
-            ft_putendl_fd("Invalid thing", fd[1]);
+            ft_putendl_fd("Invalid thing", fd);
             **i = 256;
         }
         d++;
@@ -69,7 +80,7 @@ char    **export_cmd(char **cmd, t_env *env, int *fd, int **i)
     return (cmd);
 }
 
-char    **unset_or_export(char **cmd, t_env *env, int *fd, int *i)
+char    **unset_or_export(char **cmd, t_env *env, int fd, int *i)
 {
     int a;
     int b;
@@ -96,4 +107,32 @@ char    **unset_or_export(char **cmd, t_env *env, int *fd, int *i)
             env_or_pwd("env", env, 1, fd);
     }
     return (cmd);
+}
+
+int	cd_cmd(char **cmd, t_env *env, int fd)
+{
+	int					a;
+	char				*new_path;
+
+	if (cmd[1] && cmd[2])
+		ft_putendl_fd("Not a cd thing", fd);
+	else
+	{
+		if (change_current_directory(cmd[1], env) < 0)
+			ft_putendl_fd("Only EXISTING destinations", fd);
+		else
+		{
+			a = find_var_env(env, "PWD");
+			if (a >= 0)
+				remove_env_var(env, a);
+			new_path = get_current_pwd(100, 1, fd);
+			if (new_path)
+			{
+				set_new_pwd(new_path, env);
+				free(new_path);
+			}
+			return (0);
+		}
+	}
+	return (256);
 }

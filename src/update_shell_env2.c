@@ -24,7 +24,7 @@ char    ***dup_env_structure(t_env *env, int c, int n, int i)
     }
     if (i >= 0)
         dest[d] = 0;
-    if (n != 'X')
+    if (n != 'F')
         free_env_var(env->parsed_env);
     return (dest);
 }
