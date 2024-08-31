@@ -109,7 +109,7 @@ int	init_shell_env(t_env *env, char **orig_env)
 	return (status);
 }
 
-void	print_parsed_env(t_env *env)
+/*void	print_parsed_env(t_env *env)
 {
     int i = 0;
 
@@ -120,4 +120,4 @@ void	print_parsed_env(t_env *env)
         printf("  Value: %s\n", env->parsed_env[i][1]);
         i++;
     }
-}
+}*/

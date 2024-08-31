@@ -40,7 +40,7 @@ void	shell_exec_loop(t_env *env)
 		tokens = check_and_tokenize(input);
 		if (!tokens)
 			status = 258;
-		print_parsed_env(env);
+		//print_parsed_env(env);
 		if (tokens)
 		{
 			tree =	parse_tokens(&tokens);
