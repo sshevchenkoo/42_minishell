@@ -27,7 +27,6 @@ t_tree	*tree_node(t_token_type type)
 
 int	count_content(t_token *tokens)
 {
-	int	i;
 	int	number;
 
 	number = 0;

@@ -102,8 +102,7 @@ int	init_shell_env(t_env *env, char **orig_env)
 
 	status = init_shell_struct(env, orig_env, 0, 0);
 	a = find_var_env(env, "SHLVL");
-	if (a >= 0)
-		index =  ft_atoi(env->parsed_env[a][1]);
+	index =  ft_atoi(env->parsed_env[a][1]);
 	update_env(env, index + 1, "SHLVL=");
 	init_default_var(env, 0);
 	return (status);

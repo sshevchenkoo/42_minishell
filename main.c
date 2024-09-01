@@ -56,6 +56,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_env	*my_env;
 
+	(void)argv;
 	my_env = malloc(sizeof(t_env));
 	if (!my_env)
 		return (127);
