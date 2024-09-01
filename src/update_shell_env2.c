@@ -69,7 +69,8 @@ char    **copy_env_exclude_index(char **src, int c, int n, int i)
     }
     if (i >= 0)
         dest[d] = 0;
-    free_array(src);
+    if (src)
+        free_array(src);
     return (dest);
 }
 
@@ -97,5 +98,6 @@ void    append_env(char *src, t_env *env)
     else
         dest = str_without_char(src, '+');
     replace_env_var(dest, env);
-    free(dest);
+    if (dest)
+        free(dest);
 }

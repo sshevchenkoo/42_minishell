@@ -82,7 +82,8 @@ void    replace_env_var(char *var, t_env *env)
     i = find_var_env(env, src);
     if (i >= 0)
         remove_env_var(env, i);
-    free(src);
+    if (src)
+        free(src);
     if (l > 0 && l < ft_strlen(var) - 1)
         add_env_var(env, var, l, 1);
     else if (var[l] == '=')
@@ -109,5 +110,6 @@ void    update_env(t_env *env, int value, char *var)
         value = value / 10;
     }
     replace_env_var(src, env);
-    free(src);
+    if (src)
+        free(src);
 }
