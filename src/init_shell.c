@@ -62,8 +62,8 @@ int	init_shell_struct(t_env *env, char **orig_env, int i, int m)
 	{
 		n = ft_lentchr(orig_env[m], '=');
 		env->parsed_env[m] = malloc(2 * sizeof(char *));
-		env->parsed_env[m][0] = malloc(n * sizeof(char));
-		env->parsed_env[m][1] = malloc((ft_strlen(orig_env[m]) - n) * sizeof(char));
+		env->parsed_env[m][0] = malloc(n * sizeof(char *));
+		env->parsed_env[m][1] = malloc((ft_strlen(orig_env[m]) - n) * sizeof(char *));
 		if (!env->parsed_env[m] || !env->parsed_env[m][0] || !env->parsed_env[m][1])
 			return (0);
 		ft_strcopy(env->parsed_env[m][0], orig_env[m], 0, n);
@@ -76,7 +76,7 @@ int	init_shell_struct(t_env *env, char **orig_env, int i, int m)
 
 void	init_default_var(t_env *env, int a)
 {
-	//char	*pwd;
+	char	*pwd;
 
 	a = find_var_env(env, "SHELL");
 	if (a >= 0)
@@ -84,14 +84,14 @@ void	init_default_var(t_env *env, int a)
 	replace_env_var("SHELL=minishell42", env);
 	replace_env_var("?=0", env);
 	a = find_var_env(env, "PWD");
-	/*pwd = get_current_pwd(100, 1, 2);
+	pwd = get_current_pwd(100, 1, 2);
 	if (pwd)
 	{
 		if (a >= 0)
 			remove_env_var(env, a);
 		set_new_pwd(pwd, env);
 		free(pwd);
-	}*/
+	}
 }
 
 int	init_shell_env(t_env *env, char **orig_env)

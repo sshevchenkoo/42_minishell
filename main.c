@@ -24,23 +24,22 @@ void	cleanup_shell(t_env *env, int status)
 
 void	shell_exec_loop(t_env *env)
 {
-	//int	status;
+	int	status;
 	char	*input;
 	t_token	*tokens;
 	t_tree	*tree;
 
-	(void)env;
 	while (42)
 	{
-		//status = 0;
+		status = 0;
 		input = readline("Pip-Pop: ");
 		if (input == NULL)
 			break ;
 		if (input && *input)
 			add_history(input);
 		tokens = check_and_tokenize(input);
-		//if (!tokens)
-			//status = 258;
+		if (!tokens)
+			status = 258;
 		//print_parsed_env(env);
 		if (tokens)
 		{
@@ -49,7 +48,7 @@ void	shell_exec_loop(t_env *env)
 			//exec_command(tree, env, &status);
 			free_tree(tree);
 		}
-		//update_env(env, status, "?=");
+		update_env(env, status, "?=");
 	}
 }
 

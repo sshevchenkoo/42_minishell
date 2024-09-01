@@ -16,11 +16,7 @@ void	ft_strcopy(char *s1, char *s2, int start, int end)
 
 	a = 0;
 	while (start < end)
-	{
-		s1[a] = s2[start];
-		a++;
-		start++;
-	}
+		s1[a++] = s2[start++];
 	s1[a] = '\0';
 }
 
@@ -44,10 +40,14 @@ void    free_env_var(char ***src)
     int i;
 
     i = 0;
+    if (!src)
+        return ;
     while (src[i])
     {
-        free(src[i][0]);
-        free(src[i][1]);
+        if (src[i][0])
+            free(src[i][0]);
+        if (src[i][1])
+            free(src[i][1]);
         free(src[i]);
         i++;
     }
