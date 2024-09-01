@@ -1,5 +1,26 @@
 #include "../includes/minishell.h"
 
+char	*str_without_char(char *str, char del)
+{
+	int				a;
+	int				b;
+	char			*new_str;
+
+	a = 0;
+	b = 0;
+	new_str = malloc(ft_strlen(str) + 1);
+	if (!new_str)
+		return (NULL);
+	while (str[a])
+	{
+		if (str[a] != del)
+			new_str[b++] = str[a];
+		a++;
+	}
+	new_str[b] = '\0';
+	return (new_str);
+}
+
 char    ***dup_env_structure(t_env *env, int c, int n, int i)
 {
     int b;
@@ -74,6 +95,7 @@ void    append_env(char *src, t_env *env)
         ft_strcopy(dest + b, src, c + 2, ft_strlen(src));
     }
     else
+        dest = str_without_char(src, '+');
     replace_env_var(dest, env);
     free(dest);
 }

@@ -96,6 +96,7 @@ int	cd_cmd(char **cmd, t_env *env, int fd);
 int	change_current_directory(char *path, t_env *env);
 int	is_string_numeric(char *str);
 void	builtin_exit(char **cmd);
+char	*str_without_char(char *str, char del);
 //void	print_parsed_env(t_env *env);
 //void print_tree(t_tree *root, int level);
 //void print_tokens(t_token *tokens_list);
