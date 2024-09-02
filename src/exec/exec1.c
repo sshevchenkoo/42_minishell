@@ -6,7 +6,7 @@
 /*   By: ukireyeu < ukireyeu@student.42warsaw.pl    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:04:28 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/08/31 15:48:41 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:22:15 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void	traverse_and_execute(t_tree *node, char **env, int input_fd)
 	}
 	else if (node->type == REDIR_OUT || node->type == APPEND)
 	{
+		fd = -1;
 		if (node->type == REDIR_OUT)
 			fd = open(node->right->content[0], O_RDWR | O_CREAT | O_TRUNC,
 					0644);
