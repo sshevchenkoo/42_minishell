@@ -24,7 +24,7 @@ void	cleanup_shell(t_env *env, int status)
 
 void	shell_exec_loop(t_env *env)
 {
-	int	status;
+	int		status;
 	char	*input;
 	t_token	*tokens;
 	t_tree	*tree;
@@ -40,13 +40,13 @@ void	shell_exec_loop(t_env *env)
 		tokens = check_and_tokenize(input);
 		if (!tokens)
 			status = 258;
-		//print_parsed_env(env);
+		// print_parsed_env(env);
 		if (tokens)
 		{
-			tree =	parse_tokens(&tokens);
-			traverse_and_execute(tree, env->env, -1);
-			//print_tree(tree, 0);
-			//exec_command(tree, env, &status);
+			tree = parse_tokens(&tokens);
+			traverse_and_execute(tree, env, -1);
+			// print_tree(tree, 0);
+			// exec_command(tree, env, &status);
 			free_tree(tree);
 		}
 		update_env(env, status, "?=");

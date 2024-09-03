@@ -100,7 +100,7 @@ int arr2d_len(char **arr);
 char **arr2d_dup(char **arr);
 char *get_filename(char *path);
 char *get_path(char *cmd, char **envp);
-void traverse_and_execute(t_tree *node, char **env, int input_fd);
+void traverse_and_execute(t_tree *node, t_env *env, int input_fd);
 // void	print_parsed_env(t_env *env);
 // void print_tree(t_tree *root, int level);
 // void print_tokens(t_token *tokens_list);
