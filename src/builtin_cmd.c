@@ -28,21 +28,13 @@ int	echo_cmd(char **cmd, int out_fd)
 	return (0);
 }
 
-int	env_or_pwd(char *cmd, t_env *env, int i, int fd)
+int	env_or_pwd(char *cmd, t_env *env,int fd)
 {
-	int					a;
 	char				*pwd;
 
-	a = -1;
-	if (ft_strncmp(cmd, "env", 3))
+	if (ft_strncmp(cmd, "env", 3) == 0)
 	{
-		if (i)
-			print_export_to_fd(env, fd);
-		else
-		{
-			while (env->parsed_env[++a])
-				env_var_fd(env->parsed_env[a][0], env->parsed_env[a][1], fd);
-		}
+		print_env(env, fd);
 		return (0);
 	}
 	pwd = get_current_pwd(100, 1, fd);
@@ -104,7 +96,7 @@ char    **unset_or_export(char **cmd, t_env *env, int fd, int *i)
         if (export_or_print(cmd))
             cmd = export_cmd(cmd, env, fd, &i);
         else
-            env_or_pwd("env", env, 1, fd);
+            env_or_pwd("env", env, fd);
     }
     return (cmd);
 }

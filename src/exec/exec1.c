@@ -59,7 +59,7 @@ void	basic_exec(t_tree *node, t_env *env)
 			cd_cmd(node->content, env, STDOUT_FILENO);
 		else if (ft_strncmp(node->content[0], "pwd", len) == 0
 			|| ft_strncmp(node->content[0], "env", len) == 0)
-			env_or_pwd(node->content[0], env, 0, STDOUT_FILENO);
+			env_or_pwd(node->content[0], env, STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
 	}
 	else
@@ -147,7 +147,7 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 		if (node->type == REDIR_OUT)
 			fd = open(node->right->content[0], O_RDWR | O_CREAT | O_TRUNC,
 					0644);
-		else if (node->type == APPEND)
+		else
 			fd = open(node->right->content[0], O_RDWR | O_APPEND | O_CREAT,
 					0644);
 		if (fd == -1)

@@ -82,7 +82,7 @@ void print_string_to_fd(const char *str, int fd) {
   int length;
   char eot;
 
-  length = strlen(str);
+  length = ft_strlen(str);
   // Write the string to the file descriptor
   bytes_written = write(fd, str, length);
   if (bytes_written != length) {
