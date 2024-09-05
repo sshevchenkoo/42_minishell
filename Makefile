@@ -1,7 +1,8 @@
 NAME = minishell.a
 PRINTFNAME = libftprintf.a
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror
+# CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra
 PRINTFDIR = ./ft_lib
 
 SRCS = 	main.c src/check_syntax.c src/check_syntax2.c \

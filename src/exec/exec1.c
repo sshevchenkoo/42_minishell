@@ -52,21 +52,21 @@ void	basic_exec(t_tree *node, t_env *env)
 		argv_dup[0] = get_filename(node->content[0]);
 		path = node->content[0];
 	}
-	else if (check_builtin(node->content[0]))
-	{
-		len = ft_strlen(node->content[0]);
-		if (ft_strncmp(node->content[0], "echo", len) == 0)
-			echo_cmd(node->content, STDOUT_FILENO);
-		else if (ft_strncmp(node->content[0], "cd", len) == 0)
-			cd_cmd(node->content, env, STDOUT_FILENO);
-		else if (ft_strncmp(node->content[0], "pwd", len) == 0
-			|| ft_strncmp(node->content[0], "env", len) == 0)
-			env_or_pwd(node->content[0], env, STDOUT_FILENO);
-		else if (ft_strncmp(node->content[0], "unset", len)
-			|| ft_strncmp(node->content[0], "export", len))
-			unset_or_export(node->content, env, STDOUT_FILENO, &status);
-		exit(status);
-	}
+	// else if (check_builtin(node->content[0]))
+	// {
+	// 	len = ft_strlen(node->content[0]);
+	// 	if (ft_strncmp(node->content[0], "echo", len) == 0)
+	// 		echo_cmd(node->content, STDOUT_FILENO);
+	// 	else if (ft_strncmp(node->content[0], "cd", len) == 0)
+	// 		cd_cmd(node->content, env, STDOUT_FILENO);
+	// 	else if (ft_strncmp(node->content[0], "pwd", len) == 0
+	// 		|| ft_strncmp(node->content[0], "env", len) == 0)
+	// 		env_or_pwd(node->content[0], env, STDOUT_FILENO);
+	// 	else if (ft_strncmp(node->content[0], "unset", len) == 0
+	// 		|| ft_strncmp(node->content[0], "export", len) == 0)
+	// 		unset_or_export(node->content, env, STDOUT_FILENO, &status);
+	// 	exit(status);
+	// }
 	else
 	{
 		path = get_path(node->content[0], env->env);
@@ -89,9 +89,26 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 	char	*heredoc_line;
 	char	*heredoc_input;
 	char	*tmp;
+	int		len;
+	int		status;
 
 	if (node->type == WORD)
 	{
+		if (check_builtin(node->content[0]))
+		{
+			len = ft_strlen(node->content[0]);
+			if (ft_strncmp(node->content[0], "echo", len) == 0)
+				echo_cmd(node->content, STDOUT_FILENO);
+			else if (ft_strncmp(node->content[0], "cd", len) == 0)
+				cd_cmd(node->content, env, STDOUT_FILENO);
+			else if (ft_strncmp(node->content[0], "pwd", len) == 0
+				|| ft_strncmp(node->content[0], "env", len) == 0)
+				env_or_pwd(node->content[0], env, STDOUT_FILENO);
+			else if (ft_strncmp(node->content[0], "unset", len) == 0
+				|| ft_strncmp(node->content[0], "export", len) == 0)
+				unset_or_export(node->content, env, STDOUT_FILENO, &status);
+			return ;
+		}
 		pid = fork();
 		if (pid == -1)
 		{

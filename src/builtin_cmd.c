@@ -2,8 +2,8 @@
 
 int	echo_cmd(char **cmd, int out_fd)
 {
-	int				i;
-	int				op_n;
+	int	i;
+	int	op_n;
 
 	op_n = 0;
 	if (cmd[0] && cmd[1] && is_valid_echo_param(cmd[1]))
@@ -28,13 +28,13 @@ int	echo_cmd(char **cmd, int out_fd)
 	return (0);
 }
 
-int	env_or_pwd(char *cmd, t_env *env,int fd)
+int	env_or_pwd(char *cmd, t_env *env, int fd)
 {
-	char				*pwd;
+	char	*pwd;
 
 	if (ft_strncmp(cmd, "env", 3) == 0)
 	{
-		//print_env(env, fd);
+		// print_env(env, fd);
 		print_parsed_env(env);
 		return (0);
 	}
@@ -47,65 +47,67 @@ int	env_or_pwd(char *cmd, t_env *env,int fd)
 	return (256);
 }
 
-char    **export_cmd(char **cmd, t_env *env, int fd, int **i)
+char	**export_cmd(char **cmd, t_env *env, int fd, int **i)
 {
-    int d;
-    int m;
+	int	d;
+	int	m;
 
-    d = 1;
-    while (cmd[d])
-    {
-        m = check_export(cmd[d]);
-        if (m > 0)
-        {
-            if (m >= 1 && cmd[d][m] == '+')
-                append_env(cmd[d], env);
-            else
-                replace_env_var(cmd[d], env);
-        }
-        else
-        {
-            ft_putendl_fd("Invalid thing", fd);
-            **i = 256;
-        }
-        d++;
-    }
-    return (cmd);
+	d = 1;
+	while (cmd[d])
+	{
+		m = check_export(cmd[d]);
+		if (m > 0)
+		{
+			if (m >= 1 && cmd[d][m] == '+')
+				append_env(cmd[d], env);
+			else
+				replace_env_var(cmd[d], env);
+		}
+		else
+		{
+			ft_putendl_fd("Invalid thing", fd);
+			**i = 256;
+		}
+		d++;
+	}
+	return (cmd);
 }
 
-char    **unset_or_export(char **cmd, t_env *env, int fd, int *i)
+char	**unset_or_export(char **cmd, t_env *env, int fd, int *i)
 {
-    int a;
-    int b;
+	int	a;
+	int	b;
 
-    a = 1;
-    *i = 0;
-    if (cmd[a] && ft_strncmp(cmd[0], "unset", 5) == 0)
-    {
-        while (cmd[a])
-        {
-            b = find_var_env(env, cmd[a]);
-            if (b >= 0)
-                remove_env_var(env, b);
-            else
-                *i = 256;
-            a++;
-        }
-    }
-    else if (ft_strncmp(cmd[0], "export", 6) == 0)
-    {
-        if (export_or_print(cmd))
-            cmd = export_cmd(cmd, env, fd, &i);
-        else
-            env_or_pwd("env", env, fd);
-    }
-    return (cmd);
+	a = 1;
+	*i = 0;
+	if (cmd[a] && ft_strncmp(cmd[0], "unset", 5) == 0)
+	{
+		while (cmd[a])
+		{
+			b = find_var_env(env, cmd[a]);
+			if (b >= 0)
+				remove_env_var(env, b);
+			else
+				*i = 256;
+			a++;
+		}
+	}
+	else if (ft_strncmp(cmd[0], "export", 6) == 0)
+	{
+		if (export_or_print(cmd))
+		{
+			cmd = export_cmd(cmd, env, fd, &i);
+		}
+		else
+			env_or_pwd("env", env, fd);
+	}
+	return (cmd);
 }
 
 int	cd_cmd(char **cmd, t_env *env, int fd)
 {
-	int					a;
-	char				*new_path;
+	int a;
+	char *new_path;
 
 	if (cmd[1] && cmd[2])
 		ft_putendl_fd("Not a cd thing", fd);
