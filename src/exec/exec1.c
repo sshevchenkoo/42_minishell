@@ -40,8 +40,10 @@ void	basic_exec(t_tree *node, t_env *env)
 	char	**argv_dup;
 	char	*path;
 	int		len;
+	int		status;
 
 	argv_dup = arr2d_dup(node->content);
+	status = EXIT_SUCCESS;
 	if (!argv_dup)
 		return ;
 	if (access(node->content[0], F_OK | X_OK) == 0)
@@ -60,7 +62,10 @@ void	basic_exec(t_tree *node, t_env *env)
 		else if (ft_strncmp(node->content[0], "pwd", len) == 0
 			|| ft_strncmp(node->content[0], "env", len) == 0)
 			env_or_pwd(node->content[0], env, STDOUT_FILENO);
-		exit(EXIT_SUCCESS);
+		else if (ft_strncmp(node->content[0], "unset", len)
+			|| ft_strncmp(node->content[0], "export", len))
+			unset_or_export(node->content, env, STDOUT_FILENO, &status);
+		exit(status);
 	}
 	else
 	{
@@ -265,4 +270,3 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 // 	waitpid(fork1, NULL, 0);
 // 	waitpid(fork2, NULL, 0);
 // }
-
