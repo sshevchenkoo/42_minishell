@@ -58,3 +58,15 @@ void    print_env(t_env *env, int fd)
 	print_export_vars_1(new_array, a, fd);
 	free_env_var(new_array);
 }
+
+void	print_parsed_env(t_env *env)
+{
+    int i = 0;
+
+    while (env->parsed_env[i] != NULL)
+    {
+        printf("%s=", env->parsed_env[i][0]);
+        printf("%s\n", env->parsed_env[i][1]);
+        i++;
+    }
+}

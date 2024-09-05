@@ -107,16 +107,3 @@ int	init_shell_env(t_env *env, char **orig_env)
 	init_default_var(env, 0);
 	return (status);
 }
-
-/*void	print_parsed_env(t_env *env)
-{
-    int i = 0;
-
-    while (env->parsed_env[i] != NULL)
-    {
-        printf("Variable %d:\n", i);
-        printf("  Key: %s", env->parsed_env[i][0]);
-        printf("  Value: %s\n", env->parsed_env[i][1]);
-        i++;
-    }
-}*/
