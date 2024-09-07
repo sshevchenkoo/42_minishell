@@ -103,7 +103,7 @@ void    update_env(t_env *env, int value, char *var)
     ft_strcopy(src, var, 0, ft_strlen(var));
     src[--a] =  '\0';
     if (!value)
-        src[--a] = 0;
+        src[--a] = '0';
     while (value)
     {
         src[--a] = (value % 10) + 48;

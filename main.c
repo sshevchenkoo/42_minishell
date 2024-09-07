@@ -50,7 +50,6 @@ void	shell_exec_loop(t_env *env)
 			// exec_command(tree, env, &status);
 			free_tree(tree);
 		}
-		printf("Status: %d\n", status);
 		update_env(env, status, "?=");
 	}
 }
