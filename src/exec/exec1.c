@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:04:28 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/09/07 12:40:14 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:03:58 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	quote_handle(char **content, t_env *env)
 	}
 }
 
-void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
+void	traverse_and_execute(t_tree *node, t_env *env, int input_fd, int *stat)
 {
 	int		pid;
 	int		pipefd[2];
@@ -87,7 +87,6 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 	char	*heredoc_input;
 	char	*tmp;
 	int		len;
-	int		status;
 
 	quote_handle(node->content, env);
 	if (node->type == WORD)
@@ -104,7 +103,7 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 				env_or_pwd(node->content[0], env, STDOUT_FILENO);
 			else if (ft_strncmp(node->content[0], "unset", len) == 0
 				|| ft_strncmp(node->content[0], "export", len) == 0)
-				unset_or_export(node->content, env, STDOUT_FILENO, &status);
+				unset_or_export(node->content, env, STDOUT_FILENO, stat);
 			else if (ft_strncmp(node->content[0], "exit", len) == 0)
 				builtin_exit(node->content);
 			return ;
@@ -126,15 +125,15 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 		}
 		if (input_fd != -1)
 			close(input_fd);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, stat, 0);
 	}
 	else if (node->type == PIPE)
 	{
 		if (node->left && node->left->type == REDIR_OUT)
 		{
-			traverse_and_execute(node->left, env, input_fd);
+			traverse_and_execute(node->left, env, input_fd, stat);
 			fd = open(node->left->right->content[0], O_RDONLY);
-			traverse_and_execute(node->right, env, fd);
+			traverse_and_execute(node->right, env, fd, stat);
 			close(fd);
 			return ;
 		}
@@ -154,14 +153,14 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 			close(pipefd[0]);
 			dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[1]);
-			traverse_and_execute(node->left, env, input_fd);
+			traverse_and_execute(node->left, env, input_fd, stat);
 			exit(EXIT_SUCCESS);
 		}
 		if (input_fd != -1)
 			close(input_fd);
 		close(pipefd[1]);
-		traverse_and_execute(node->right, env, pipefd[0]);
-		waitpid(pid, NULL, 0);
+		traverse_and_execute(node->right, env, pipefd[0], stat);
+		waitpid(pid, stat, 0);
 		close(pipefd[0]);
 	}
 	else if (node->type == REDIR_OUT || node->type == APPEND)
@@ -192,12 +191,12 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 			}
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
-			traverse_and_execute(node->left, env, input_fd);
+			traverse_and_execute(node->left, env, input_fd, stat);
 			exit(EXIT_SUCCESS);
 		}
 		close(input_fd);
 		close(fd);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, stat, 0);
 	}
 	else if (node->type == REDIR_IN)
 	{
@@ -209,7 +208,7 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 			perror("open");
 			exit(EXIT_FAILURE);
 		}
-		traverse_and_execute(node->left, env, fd);
+		traverse_and_execute(node->left, env, fd, stat);
 		close(fd);
 	}
 	else if (node->type == HEREDOC)
@@ -243,13 +242,13 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 		if (pid == 0)
 		{
 			close(pipefd[1]);
-			traverse_and_execute(node->left, env, pipefd[0]);
+			traverse_and_execute(node->left, env, pipefd[0], stat);
 			exit(EXIT_SUCCESS);
 		}
 		close(pipefd[0]);
 		print_string_to_fd(heredoc_input, pipefd[1]);
 		close(pipefd[1]);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, stat, 0);
 		free(heredoc_input);
 	}
 }
