@@ -20,6 +20,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+extern int	g_var_thing;
+
 typedef enum s_token_type {
   WORD,
   PIPE,
@@ -96,7 +98,8 @@ char *get_filename(char *path);
 char *get_path(char *cmd, char **envp);
 void traverse_and_execute(t_tree *node, t_env *env, int input_fd);
 void    print_env(t_env *env, int fd);
-void	print_parsed_env(t_env *env);
+//void	print_parsed_env(t_env *env);
+//void	print_orig_env(t_env *env);
 // void print_tree(t_tree *root, int level);
 // void print_tokens(t_token *tokens_list);
 
