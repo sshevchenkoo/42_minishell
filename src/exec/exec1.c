@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:04:28 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/09/07 11:26:05 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/07 12:40:14 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,8 @@ void	basic_exec(t_tree *node, t_env *env)
 {
 	char	**argv_dup;
 	char	*path;
-	int		len;
-	int		status;
 
 	argv_dup = arr2d_dup(node->content);
-	status = EXIT_SUCCESS;
 	if (!argv_dup)
 		return ;
 	if (access(node->content[0], F_OK | X_OK) == 0)
@@ -52,21 +49,6 @@ void	basic_exec(t_tree *node, t_env *env)
 		argv_dup[0] = get_filename(node->content[0]);
 		path = node->content[0];
 	}
-	// else if (check_builtin(node->content[0]))
-	// {
-	// 	len = ft_strlen(node->content[0]);
-	// 	if (ft_strncmp(node->content[0], "echo", len) == 0)
-	// 		echo_cmd(node->content, STDOUT_FILENO);
-	// 	else if (ft_strncmp(node->content[0], "cd", len) == 0)
-	// 		cd_cmd(node->content, env, STDOUT_FILENO);
-	// 	else if (ft_strncmp(node->content[0], "pwd", len) == 0
-	// 		|| ft_strncmp(node->content[0], "env", len) == 0)
-	// 		env_or_pwd(node->content[0], env, STDOUT_FILENO);
-	// 	else if (ft_strncmp(node->content[0], "unset", len) == 0
-	// 		|| ft_strncmp(node->content[0], "export", len) == 0)
-	// 		unset_or_export(node->content, env, STDOUT_FILENO, &status);
-	// 	exit(status);
-	// }
 	else
 	{
 		path = get_path(node->content[0], env->env);
@@ -81,6 +63,21 @@ void	basic_exec(t_tree *node, t_env *env)
 	execve(path, argv_dup, env->env);
 }
 
+void	quote_handle(char **content, t_env *env)
+{
+	char	*tmp;
+
+	if (!content)
+		return ;
+	while (*content)
+	{
+		tmp = *content;
+		*content = expand_quotes(*content, env);
+		free(tmp);
+		++content;
+	}
+}
+
 void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 {
 	int		pid;
@@ -92,6 +89,7 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 	int		len;
 	int		status;
 
+	quote_handle(node->content, env);
 	if (node->type == WORD)
 	{
 		if (check_builtin(node->content[0]))
