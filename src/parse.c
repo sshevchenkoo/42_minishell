@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yashevch <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/14 16:11:04 by yashevch          #+#    #+#             */
-/*   Updated: 2024/07/14 20:20:41 by yashevch         ###   ########.fr       */
+/*   Updated: 2024/09/05 19:11:01 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 t_tree	*parse_command(t_token **tokens)
@@ -67,10 +68,8 @@ t_tree	*parse_red(t_token **tokens)
 	t_tree	*red_node;
 
 	tmp = *tokens;
-	if ((*tokens)->type == REDIR_IN
-		|| (*tokens)->type == REDIR_OUT
-		|| (*tokens)->type == APPEND
-		|| (*tokens)->type == HEREDOC)
+	if ((*tokens)->type == REDIR_IN || (*tokens)->type == REDIR_OUT
+		|| (*tokens)->type == APPEND || (*tokens)->type == HEREDOC)
 	{
 		red_node = tree_node((*tokens)->type);
 		*tokens = (*tokens)->next->next;
@@ -108,53 +107,55 @@ t_tree	*parse_tokens(t_token **tokens)
 	return (parse_red(&start));
 }
 
-/*void print_tree(t_tree *root, int level) {
-    if (root == NULL) {
-        return;
-    }
-
-    // Выводим отступы для текущего уровня
-    for (int i = 0; i < level; ++i) {
-        printf("    ");
-    }
-
-    // Выводим тип узла и его содержимое, если есть
-    switch (root->type) {
-        case WORD:
-            printf("WORD: ");
-            for (int i = 0; root->content[i] != NULL; ++i) {
-                printf("%s ", root->content[i]);
-            }
-            printf("\n");
-            break;
-        case PIPE:
-            printf("PIPE\n");
-            break;
-        case REDIR_IN:
-            printf("REDIR_IN\n");
-            break;
-        case REDIR_OUT:
-            printf("REDIR_OUT\n");
-            break;
-        case APPEND:
-            printf("APPEND\n");
-            break;
-        case HEREDOC:
-            printf("HEREDOC\n");
-            break;
-        default:
-            printf("UNKNOWN\n");
-            break;
-    }
-
-    // Рекурсивно обходим левое поддерево
-    if (root->left) {
-        print_tree(root->left, level + 1);
-    }
-
-    // Рекурсивно обходим правое поддерево
-    if (root->right) {
-        print_tree(root->right, level + 1);
-    }
-}
-*/
+// void	print_tree(t_tree *root, int level)
+// {
+// 	if (root == NULL)
+// 	{
+// 		return ;
+// 	}
+// 	// Выводим отступы для текущего уровня
+// 	for (int i = 0; i < level; ++i)
+// 	{
+// 		printf("    ");
+// 	}
+// 	// Выводим тип узла и его содержимое, если есть
+// 	switch (root->type)
+// 	{
+// 	case WORD:
+// 		printf("WORD: ");
+// 		for (int i = 0; root->content[i] != NULL; ++i)
+// 		{
+// 			printf("%s ", root->content[i]);
+// 		}
+// 		printf("\n");
+// 		break ;
+// 	case PIPE:
+// 		printf("PIPE\n");
+// 		break ;
+// 	case REDIR_IN:
+// 		printf("REDIR_IN\n");
+// 		break ;
+// 	case REDIR_OUT:
+// 		printf("REDIR_OUT\n");
+// 		break ;
+// 	case APPEND:
+// 		printf("APPEND\n");
+// 		break ;
+// 	case HEREDOC:
+// 		printf("HEREDOC\n");
+// 		break ;
+// 	default:
+// 		printf("UNKNOWN\n");
+// 		break ;
+// 	}
+// 	// Рекурсивно обходим левое поддерево
+// 	if (root->left)
+// 	{
+// 		print_tree(root->left, level + 1);
+// 	}
+// 	// Рекурсивно обходим правое поддерево
+// 	if (root->right)
+// 	{
+// 		print_tree(root->right, level + 1);
+// 	}
+// }

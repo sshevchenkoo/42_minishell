@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yashevch <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:05:57 by yashevch          #+#    #+#             */
-/*   Updated: 2024/07/03 14:08:30 by yashevch         ###   ########.fr       */
+/*   Updated: 2024/09/07 11:34:18 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void remove_env_var(t_env *env, int i);
 char ***dup_env_structure(t_env *env, int c, int n, int i);
 char **copy_env_exclude_index(char **src, int c, int n, int i);
 void free_array(char **src);
-char    *get_current_pwd(int size, int try, int fd);
+char    *get_current_pwd(int size, int try_it, int fd);
 char **unset_or_export(char **cmd, t_env *env, int fd, int *i);
 char **export_cmd(char **cmd, t_env *env, int fd, int **i);
 int	env_or_pwd(char *cmd, t_env *env,int fd);
@@ -98,6 +98,7 @@ char *get_filename(char *path);
 char *get_path(char *cmd, char **envp);
 void traverse_and_execute(t_tree *node, t_env *env, int input_fd);
 void    print_env(t_env *env, int fd);
+char	*expand_quotes(char *str, t_env *env);
 //void	print_parsed_env(t_env *env);
 //void	print_orig_env(t_env *env);
 // void print_tree(t_tree *root, int level);

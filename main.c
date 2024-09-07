@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yashevch <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:02:41 by yashevch          #+#    #+#             */
-/*   Updated: 2024/07/03 21:36:19 by yashevch         ###   ########.fr       */
+/*   Updated: 2024/09/07 10:55:22 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "includes/minishell.h"
 
 void	cleanup_shell(t_env *env, int status)
@@ -44,7 +45,10 @@ void	shell_exec_loop(t_env *env)
 		if (tokens)
 		{
 			tree = parse_tokens(&tokens);
-			traverse_and_execute(tree, env, -1);
+			printf("expanded string: %s\n", expand_quotes(tree->content[0],
+					env));
+			// printf("command: %s\n", tree->content[0]);
+			// traverse_and_execute(tree, env, -1);
 			// print_tree(tree, 0);
 			// exec_command(tree, env, &status);
 			free_tree(tree);

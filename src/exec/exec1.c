@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec1.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ukireyeu < ukireyeu@student.42warsaw.pl    +#+  +:+       +#+        */
+/*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:04:28 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/08/31 15:48:41 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/07 11:26:05 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd)
 			else if (ft_strncmp(node->content[0], "unset", len) == 0
 				|| ft_strncmp(node->content[0], "export", len) == 0)
 				unset_or_export(node->content, env, STDOUT_FILENO, &status);
+			else if (ft_strncmp(node->content[0], "exit", len) == 0)
+				builtin_exit(node->content);
 			return ;
 		}
 		pid = fork();
