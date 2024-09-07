@@ -11,7 +11,7 @@ SRCS = 	main.c src/check_syntax.c src/check_syntax2.c \
 		src/update_shell_env2.c src/shell_env_utils.c \
 		src/builtin_cmd.c src/builtin_cmd2.c src/builtin_cmd3.c \
 		src/builtin_cmd4.c src/exec/exec1.c src/utils/utils1.c src/utils/utils2.c \
-		src/exec/quote.c
+		src/exec/quote.c src/signals.c
 
 OBJS = $(SRCS:.c=.o)
 

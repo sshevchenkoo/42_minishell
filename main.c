@@ -50,6 +50,7 @@ void	shell_exec_loop(t_env *env)
 			// exec_command(tree, env, &status);
 			free_tree(tree);
 		}
+		printf("Status: %d\n", status);
 		update_env(env, status, "?=");
 	}
 }
@@ -59,6 +60,7 @@ int	main(int argc, char **argv, char **env)
 	t_env	*my_env;
 
 	(void)argv;
+	setup_signal();
 	my_env = malloc(sizeof(t_env));
 	if (!my_env)
 		return (127);

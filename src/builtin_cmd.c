@@ -34,8 +34,8 @@ int	env_or_pwd(char *cmd, t_env *env, int fd)
 
 	if (ft_strncmp(cmd, "env", 3) == 0)
 	{
-		print_env(env, fd);
-		//print_parsed_env(env);
+		//print_env(env, fd);
+		print_parsed_env(env);
 		//print_orig_env(env);
 		return (0);
 	}

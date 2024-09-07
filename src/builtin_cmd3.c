@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-int	sizeof_str(char *str, char end)
+/*int	sizeof_str(char *str, char end)
 {
 	int			a;
 
@@ -57,9 +57,9 @@ void    print_env(t_env *env, int fd)
 	new_array[a] = 0;
 	print_export_vars_1(new_array, a, fd);
 	free_env_var(new_array);
-}
+}*/
 
-/*void	print_parsed_env(t_env *env)
+void	print_parsed_env(t_env *env)
 {
     int i = 0;
 
@@ -71,7 +71,7 @@ void    print_env(t_env *env, int fd)
     }
 }
 
-void	print_orig_env(t_env *env)
+/*void	print_orig_env(t_env *env)
 {
     int i = 0;
 
