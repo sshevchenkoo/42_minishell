@@ -78,9 +78,9 @@ char	*get_current_pwd(int size, int try, int fd)
 
 void	set_new_pwd(char *pwd, t_env *env)
 {
-	char **pwd_export;
-	int i;
-	int m;
+	char	**pwd_export;
+	int		i;
+	int		m;
 
 	i = 0;
 	m = 4;

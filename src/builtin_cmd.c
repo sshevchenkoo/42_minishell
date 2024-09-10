@@ -34,9 +34,7 @@ int	env_or_pwd(char *cmd, t_env *env, int fd)
 
 	if (ft_strncmp(cmd, "env", 3) == 0)
 	{
-		//print_env(env, fd);
 		print_parsed_env(env);
-		//print_orig_env(env);
 		return (0);
 	}
 	pwd = get_current_pwd(100, 1, fd);
@@ -96,9 +94,7 @@ char	**unset_or_export(char **cmd, t_env *env, int fd, int *i)
 	else if (ft_strncmp(cmd[0], "export", 6) == 0)
 	{
 		if (export_or_print(cmd))
-		{
 			cmd = export_cmd(cmd, env, fd, &i);
-		}
 		else
 			env_or_pwd("env", env, fd);
 	}
@@ -107,8 +103,8 @@ char	**unset_or_export(char **cmd, t_env *env, int fd, int *i)
 
 int	cd_cmd(char **cmd, t_env *env, int fd)
 {
-	int a;
-	char *new_path;
+	int			a;
+	char		*new_path;
 
 	if (cmd[1] && cmd[2])
 		ft_putendl_fd("Not a cd thing", fd);

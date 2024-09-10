@@ -20,49 +20,49 @@ void	ft_strcopy(char *s1, char *s2, int start, int end)
 	s1[a] = '\0';
 }
 
-int ft_count_digit(int digit)
+int	ft_count_digit(int digit)
 {
-    int c;
+	int	c;
 
-    c = 0;
-    if (!digit)
-        return (1);
-    while (digit)
-    {
-        digit = digit / 10;
-        c++;
-    }
-    return (c);
+	c = 0;
+	if (!digit)
+		return (1);
+	while (digit)
+	{
+		digit = digit / 10;
+		c++;
+	}
+	return (c);
 }
 
-void    free_env_var(char ***src)
+void	free_env_var(char ***src)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (!src)
-        return ;
-    while (src[i])
-    {
-        if (src[i][0])
-            free(src[i][0]);
-        if (src[i][1])
-            free(src[i][1]);
-        free(src[i]);
-        i++;
-    }
-    free(src);
+	i = 0;
+	if (!src)
+		return ;
+	while (src[i])
+	{
+		if (src[i][0])
+			free(src[i][0]);
+		if (src[i][1])
+			free(src[i][1]);
+		free(src[i]);
+		i++;
+	}
+	free(src);
 }
 
-void    free_array(char **src)
+void	free_array(char **src)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (src[i])
-    {
-        free(src[i]);
-        i++;
-    }
-    free(src);
+	i = 0;
+	while (src[i])
+	{
+		free(src[i]);
+		i++;
+	}
+	free(src);
 }

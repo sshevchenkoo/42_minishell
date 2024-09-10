@@ -1,4 +1,5 @@
 #include "../includes/minishell.h"
+
 int					g_var_thing;
 
 void	setup_signal(void)

@@ -2,7 +2,7 @@
 
 int	is_string_numeric(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (str[i] == '\0')
@@ -36,7 +36,7 @@ int	change_current_directory(char *path, t_env *env)
 
 void	builtin_exit(char **cmd)
 {
-	int status;
+	int	status;
 
 	status = 0;
 	if (cmd[1] && cmd[2])

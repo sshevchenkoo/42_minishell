@@ -9,7 +9,8 @@ int	find_var_env(t_env *env, char *str)
 	while (env->parsed_env[i])
 	{
 		t = 0;
-		while (env->parsed_env[i][0][t] && str[t] && env->parsed_env[i][0][t] == str[t])
+		while (env->parsed_env[i][0][t] && str[t]
+				&& env->parsed_env[i][0][t] == str[t])
 			t++;
 		if (t == ft_strlen(str) && t == ft_strlen(env->parsed_env[i][0]))
 			return (i);
@@ -47,7 +48,6 @@ char	**duplicate_env(char **env)
 	return (new_old);
 }
 
-
 int	init_shell_struct(t_env *env, char **orig_env, int i, int m)
 {
 	int	n;
@@ -63,11 +63,14 @@ int	init_shell_struct(t_env *env, char **orig_env, int i, int m)
 		n = ft_lentchr(orig_env[m], '=');
 		env->parsed_env[m] = malloc(2 * sizeof(char *));
 		env->parsed_env[m][0] = malloc(n * sizeof(char *));
-		env->parsed_env[m][1] = malloc((ft_strlen(orig_env[m]) - n) * sizeof(char *));
-		if (!env->parsed_env[m] || !env->parsed_env[m][0] || !env->parsed_env[m][1])
+		env->parsed_env[m][1] = malloc((ft_strlen(orig_env[m]) - n)
+				* sizeof(char *));
+		if (!env->parsed_env[m] || !env->parsed_env[m][0]
+			|| !env->parsed_env[m][1])
 			return (0);
 		ft_strcopy(env->parsed_env[m][0], orig_env[m], 0, n);
-		ft_strcopy(env->parsed_env[m][1], orig_env[m], n + 1, ft_strlen(orig_env[m]));
+		ft_strcopy(env->parsed_env[m][1], orig_env[m], n + 1,
+			ft_strlen(orig_env[m]));
 		m++;
 	}
 	env->parsed_env[m] = NULL;
@@ -102,7 +105,7 @@ int	init_shell_env(t_env *env, char **orig_env)
 
 	status = init_shell_struct(env, orig_env, 0, 0);
 	a = find_var_env(env, "SHLVL");
-	index =  ft_atoi(env->parsed_env[a][1]);
+	index = ft_atoi(env->parsed_env[a][1]);
 	update_env(env, index + 1, "SHLVL=");
 	init_default_var(env, 0);
 	return (status);

@@ -38,17 +38,36 @@ void	token_chars(char **line, t_token **tokens_list)
 	(*line)++;
 }
 
-void	token_words(char **line, t_token **token_lists)
+void	handle_token_content(char *start, int len, t_token **token_lists)
 {
 	char	*content;
+	int		i;
+
+	content = malloc(sizeof(char) * len + 1);
+	if (content)
+	{
+		content[len] = '\0';
+		i = 0;
+		while (i < len)
+		{
+			content[i] = start[i];
+			i++;
+		}
+		add_token(token_lists, new_token(WORD, content));
+		free(content);
+	}
+	else
+		ft_putstr_fd("Error: Malloc failed.\n", 2);
+}
+
+void	token_words(char **line, t_token **token_lists)
+{
 	char	quote;
 	char	*start;
 	int		flag;
 	int		len;
-	int		i;
 
 	len = 0;
-	i = 0;
 	start = *line;
 	flag = 0;
 	quote = '\0';
@@ -67,22 +86,7 @@ void	token_words(char **line, t_token **token_lists)
 		(*line)++;
 	}
 	if (len > 0)
-	{
-		content = malloc(sizeof(char) * len + 1);
-		if (content)
-		{
-			content[len] = '\0';
-			while (i < len)
-			{
-				content[i] = start[i];
-				i++;
-			}
-			add_token(token_lists, new_token(WORD, content));
-			free(content);
-		}
-		else
-			ft_putstr_fd("Error: Malloc failed.\n", 2);
-	}
+		handle_token_content(start, len, token_lists);
 }
 
 t_token	*tokenize_input(char *line)
