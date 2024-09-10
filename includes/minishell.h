@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:05:57 by yashevch          #+#    #+#             */
-/*   Updated: 2024/09/07 11:34:18 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:01:51 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdio.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -96,7 +97,7 @@ int arr2d_len(char **arr);
 char **arr2d_dup(char **arr);
 char *get_filename(char *path);
 char *get_path(char *cmd, char **envp);
-void traverse_and_execute(t_tree *node, t_env *env, int input_fd);
+void	traverse_and_execute(t_tree *node, t_env *env, int input_fd, int *stat);
 //void    print_env(t_env *env, int fd);
 char	*expand_quotes(char *str, t_env *env);
 void	setup_signal(void);

@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:08:53 by neulad            #+#    #+#             */
-/*   Updated: 2024/09/07 12:32:08 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/07 16:00:37 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static void	skipvar(char **str)
 {
 	while (**str && validchar(**str))
 		++(*str);
+	if (**str == '?')
+		++(*str);
 }
 
 static char	*get_var(char *str, t_env *env)
@@ -67,12 +69,16 @@ static char	*get_var(char *str, t_env *env)
 	var_name = ft_strdup("");
 	if (!var_name)
 		return (NULL);
+	if (*str == '?')
+		var_name = "?";
 	while (*str && validchar(*str))
 	{
 		var_name = add_char(var_name, *str);
 		++str;
 	}
 	i = find_var_env(env, var_name);
+	if (var_name[0] != '?')
+		free(var_name);
 	if (i == -1)
 		return (NULL);
 	return (env->parsed_env[i][1]);
