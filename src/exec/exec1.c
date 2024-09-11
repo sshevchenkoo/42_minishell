@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:04:28 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/09/07 16:03:58 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:12:57 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,211 +78,21 @@ void	quote_handle(char **content, t_env *env)
 	}
 }
 
-void	traverse_and_execute(t_tree *node, t_env *env, int input_fd, int *stat)
+void	handle_builtin(t_tree *node, t_env *env, int *stat)
 {
-	int		pid;
-	int		pipefd[2];
-	int		fd;
-	char	*heredoc_line;
-	char	*heredoc_input;
-	char	*tmp;
-	int		len;
+	int	len;
 
-	quote_handle(node->content, env);
-	if (node->type == WORD)
-	{
-		if (check_builtin(node->content[0]))
-		{
-			len = ft_strlen(node->content[0]);
-			if (ft_strncmp(node->content[0], "echo", len) == 0)
-				echo_cmd(node->content, STDOUT_FILENO);
-			else if (ft_strncmp(node->content[0], "cd", len) == 0)
-				cd_cmd(node->content, env, STDOUT_FILENO);
-			else if (ft_strncmp(node->content[0], "pwd", len) == 0
-				|| ft_strncmp(node->content[0], "env", len) == 0)
-				env_or_pwd(node->content[0], env, STDOUT_FILENO);
-			else if (ft_strncmp(node->content[0], "unset", len) == 0
-				|| ft_strncmp(node->content[0], "export", len) == 0)
-				unset_or_export(node->content, env, STDOUT_FILENO, stat);
-			else if (ft_strncmp(node->content[0], "exit", len) == 0)
-				builtin_exit(node->content);
-			return ;
-		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		if (pid == 0)
-		{
-			if (input_fd != -1)
-			{
-				dup2(input_fd, STDIN_FILENO);
-				close(input_fd);
-			}
-			basic_exec(node, env);
-		}
-		if (input_fd != -1)
-			close(input_fd);
-		waitpid(pid, stat, 0);
-	}
-	else if (node->type == PIPE)
-	{
-		if (node->left && node->left->type == REDIR_OUT)
-		{
-			traverse_and_execute(node->left, env, input_fd, stat);
-			fd = open(node->left->right->content[0], O_RDONLY);
-			traverse_and_execute(node->right, env, fd, stat);
-			close(fd);
-			return ;
-		}
-		if (pipe(pipefd) == -1)
-		{
-			perror("pipe");
-			exit(EXIT_FAILURE);
-		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		if (pid == 0)
-		{
-			close(pipefd[0]);
-			dup2(pipefd[1], STDOUT_FILENO);
-			close(pipefd[1]);
-			traverse_and_execute(node->left, env, input_fd, stat);
-			exit(EXIT_SUCCESS);
-		}
-		if (input_fd != -1)
-			close(input_fd);
-		close(pipefd[1]);
-		traverse_and_execute(node->right, env, pipefd[0], stat);
-		waitpid(pid, stat, 0);
-		close(pipefd[0]);
-	}
-	else if (node->type == REDIR_OUT || node->type == APPEND)
-	{
-		if (node->type == REDIR_OUT)
-			fd = open(node->right->content[0], O_RDWR | O_CREAT | O_TRUNC,
-					0644);
-		else
-			fd = open(node->right->content[0], O_RDWR | O_APPEND | O_CREAT,
-					0644);
-		if (fd == -1)
-		{
-			perror("open");
-			exit(EXIT_FAILURE);
-		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		if (pid == 0)
-		{
-			if (input_fd != -1)
-			{
-				dup2(input_fd, STDIN_FILENO);
-				close(input_fd);
-			}
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-			traverse_and_execute(node->left, env, input_fd, stat);
-			exit(EXIT_SUCCESS);
-		}
-		close(input_fd);
-		close(fd);
-		waitpid(pid, stat, 0);
-	}
-	else if (node->type == REDIR_IN)
-	{
-		if (input_fd != -1)
-			close(input_fd);
-		fd = open(node->right->content[0], O_RDONLY);
-		if (fd == -1)
-		{
-			perror("open");
-			exit(EXIT_FAILURE);
-		}
-		traverse_and_execute(node->left, env, fd, stat);
-		close(fd);
-	}
-	else if (node->type == HEREDOC)
-	{
-		heredoc_input = ft_strdup("");
-		while ((heredoc_line = readline("heredoc> ")))
-		{
-			if (!ft_strncmp(heredoc_line, node->right->content[0],
-					ft_strlen(node->right->content[0])))
-			{
-				break ;
-			}
-			tmp = heredoc_input;
-			heredoc_input = ft_strjoin(heredoc_input, "\n");
-			free(tmp);
-			tmp = heredoc_input;
-			heredoc_input = ft_strjoin(heredoc_input, heredoc_line);
-			free(tmp);
-		}
-		if (pipe(pipefd) == -1)
-		{
-			perror("pipe");
-			exit(EXIT_FAILURE);
-		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		if (pid == 0)
-		{
-			close(pipefd[1]);
-			traverse_and_execute(node->left, env, pipefd[0], stat);
-			exit(EXIT_SUCCESS);
-		}
-		close(pipefd[0]);
-		print_string_to_fd(heredoc_input, pipefd[1]);
-		close(pipefd[1]);
-		waitpid(pid, stat, 0);
-		free(heredoc_input);
-	}
+	len = ft_strlen(node->content[0]);
+	if (ft_strncmp(node->content[0], "echo", len) == 0)
+		echo_cmd(node->content, STDOUT_FILENO);
+	else if (ft_strncmp(node->content[0], "cd", len) == 0)
+		cd_cmd(node->content, env, STDOUT_FILENO);
+	else if (ft_strncmp(node->content[0], "pwd", len) == 0
+		|| ft_strncmp(node->content[0], "env", len) == 0)
+		env_or_pwd(node->content[0], env, STDOUT_FILENO);
+	else if (ft_strncmp(node->content[0], "unset", len) == 0
+		|| ft_strncmp(node->content[0], "export", len) == 0)
+		unset_or_export(node->content, env, STDOUT_FILENO, stat);
+	else if (ft_strncmp(node->content[0], "exit", len) == 0)
+		builtin_exit(node->content);
 }
-
-// void	run_pipe(t_tree *ast, char **env)
-// {
-// 	int	pipe1[2];
-// 	int	fork1;
-// 	int	fork2;
-
-// 	if (pipe(pipe1) == -1)
-// 		return ;
-// 	fork1 = fork();
-// 	if (fork1 == -1)
-// 		return ;
-// 	if (fork1 == 0)
-// 	{
-// 		close(pipe1[0]);
-// 		dup2(pipe1[1], STDOUT_FILENO);
-// 		close(pipe1[1]);
-// 		basic_exec(ast->left, env);
-// 	}
-// 	fork2 = fork();
-// 	if (fork2 == -1)
-// 		return ;
-// 	if (fork2 == 0)
-// 	{
-// 		close(pipe1[1]);
-// 		dup2(pipe1[0], STDIN_FILENO);
-// 		close(pipe1[0]);
-// 		basic_exec(ast->right, env);
-// 	}
-// 	close(pipe1[0]);
-// 	close(pipe1[1]);
-// 	waitpid(fork1, NULL, 0);
-// 	waitpid(fork2, NULL, 0);
-// }
