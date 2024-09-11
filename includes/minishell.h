@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:05:57 by yashevch          #+#    #+#             */
-/*   Updated: 2024/09/07 16:01:51 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:11:40 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_token {
 typedef struct s_tree {
   char **content;
   t_token_type type;
+  int fd;
   struct s_tree *left;
   struct s_tree *right;
 } t_tree;
@@ -104,6 +105,22 @@ void	setup_signal(void);
 void	child_ctrl_c(int sig_num);
 void	handle_ctrl_c(int a);
 void	print_parsed_env(t_env *env);
+int	validchar(char c);
+void	skipvar(char **str);
+void	handle_heredoc_input(char **heredoc_input, t_tree *node);
+void	close_and_exec_heredoc(int pipefd[2], t_tree *node, t_env *env, int *stat);
+void	create_pipe_or_exit(int pipefd[2]);
+void	handle_heredoc(t_tree *node, t_env *env, int *stat);
+void	traverse_and_execute(t_tree *node, t_env *env, int input_fd, int *stat);
+void	handle_redirection(t_tree *node, t_env *env, int input_fd, int *stat);
+void	handle_pipe(t_tree *node, t_env *env, int input_fd, int *stat);
+void	create_pipe(int pipefd[2]);
+void	close_and_exec_pipe(t_tree *node, t_env *env, int input_fd, int *stat);
+void	handle_fork_exec(t_tree *node, t_env *env, int input_fd, int *stat);
+void	handle_builtin(t_tree *node, t_env *env, int *stat);
+void	quote_handle(char **content, t_env *env);
+int	check_builtin(char *str);
+void	basic_exec(t_tree *node, t_env *env);
 //void	print_orig_env(t_env *env);
 // void print_tree(t_tree *root, int level);
 // void print_tokens(t_token *tokens_list);

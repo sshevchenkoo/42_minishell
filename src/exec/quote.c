@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:08:53 by neulad            #+#    #+#             */
-/*   Updated: 2024/09/07 16:00:37 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/10 19:56:45 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static char	*add_char(char *str, char c)
 	int		len;
 	int		clen;
 
-	clen = len = ft_strlen(str);
+	len = ft_strlen(str);
+	clen = len;
 	res = malloc(len + 2);
 	if (!res)
 		return (NULL);
@@ -28,37 +29,6 @@ static char	*add_char(char *str, char c)
 	res[clen + 1] = '\0';
 	free(str);
 	return (res);
-}
-
-// static char	*capvar(char *str, t_env *env)
-// {
-// 	int		varlen;
-// 	char	*varname;
-// 	char	*res;
-
-// 	varlen = 0;
-// 	varname = ft_strdup(str);
-// 	if (!varname)
-// 		return (NULL);
-// 	while (str[varlen] && str[varlen] != ' ')
-// 		++varlen;
-// 	varname[varlen] = '\0';
-// 	res = get_var(varname, env);
-// 	free(varname);
-// 	return (res);
-// }
-
-static int	validchar(char c)
-{
-	return (ft_isalnum(c) || c == '_');
-}
-
-static void	skipvar(char **str)
-{
-	while (**str && validchar(**str))
-		++(*str);
-	if (**str == '?')
-		++(*str);
 }
 
 static char	*get_var(char *str, t_env *env)
@@ -84,35 +54,55 @@ static char	*get_var(char *str, t_env *env)
 	return (env->parsed_env[i][1]);
 }
 
+static char	*handle_variable(char **str, t_env *env, char *res)
+{
+	char	*varname;
+
+	++(*str);
+	varname = get_var(*str, env);
+	if (!varname)
+	{
+		skipvar(str);
+		return (res);
+	}
+	res = ft_strjoin(res, varname);
+	skipvar(str);
+	return (res);
+}
+
+static int	toggle_quotes(char c, int *dquote, int *squote)
+{
+	if (c == '"' && !(*squote))
+	{
+		*dquote = !(*dquote);
+		return (1);
+	}
+	else if (c == '\'' && !(*dquote))
+	{
+		*squote = !(*squote);
+		return (1);
+	}
+	return (0);
+}
+
 char	*expand_quotes(char *str, t_env *env)
 {
-	char *res;
-	int dquote;
-	int squote;
-	char *varname;
+	char	*res;
+	int		dquote;
+	int		squote;
 
-	squote = dquote = 0;
+	dquote = 0;
+	squote = 0;
 	res = ft_strdup("");
 	if (!res)
 		return (NULL);
-
 	while (*str)
 	{
-		if (*str == '"' && !squote)
-			dquote = !dquote;
-		else if (*str == '\'' && !dquote)
-			squote = !squote;
+		if (toggle_quotes(*str, &dquote, &squote))
+			;
 		else if (*str == '$' && !squote)
 		{
-			++str;
-			varname = get_var(str, env);
-			if (!varname)
-			{
-				skipvar(&str);
-				continue ;
-			}
-			res = ft_strjoin(res, varname);
-			skipvar(&str);
+			res = handle_variable(&str, env, res);
 			continue ;
 		}
 		else
