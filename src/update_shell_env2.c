@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   update_shell_env2.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/11 12:50:45 by ukireyeu          #+#    #+#             */
+/*   Updated: 2024/09/11 12:51:40 by ukireyeu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 char	*str_without_char(char *str, char del)
 {
-	int				a;
-	int				b;
-	char			*new_str;
+	int		a;
+	int		b;
+	char	*new_str;
 
 	a = 0;
 	b = 0;

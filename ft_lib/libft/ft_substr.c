@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yashevch <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 13:27:45 by yashevch          #+#    #+#             */
-/*   Updated: 2024/03/09 14:45:49 by yashevch         ###   ########.fr       */
+/*   Updated: 2024/09/11 12:54:50 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 char	*ft_substr(char const *s, int start, int len)
 {
 	char	*s2;
-	int	i;
+	int		i;
 
 	i = 0;
 	if (!s)
