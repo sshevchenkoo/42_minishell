@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 20:20:34 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/09/11 12:12:32 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/11 20:15:13 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	handle_fork_exec(t_tree *node, t_env *env, int input_fd, int *stat)
 void	close_and_exec_pipe(t_tree *n, t_env *e, int ifd, int *s)
 {
 	traverse_and_execute(n->left, e, ifd, s);
+	free_tree(n);
 	exit(EXIT_SUCCESS);
 }
 

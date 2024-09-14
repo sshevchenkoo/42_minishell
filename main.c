@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:02:41 by yashevch          #+#    #+#             */
-/*   Updated: 2024/09/11 12:49:36 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:10:22 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,7 @@ int	main(int argc, char **argv, char **env)
 		shell_exec_loop(my_env);
 		cleanup_shell(my_env, 0);
 	}
+	else
+		free(my_env);
 	return (0);
 }

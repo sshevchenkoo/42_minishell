@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 16:05:44 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/09/11 12:22:07 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:05:57 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**arr2d_dup(char **arr)
 
 	len = arr2d_len(arr);
 	i = -1;
-	new_arr = malloc(sizeof(char *) * len + 1);
+	new_arr = malloc(sizeof(char *) * (len + 1));
 	if (!new_arr)
 		return (NULL);
 	while (arr[++i])
