@@ -36,7 +36,7 @@ void	handle_ctrl_c(int a)
 {
 	(void)a;
 	g_var_thing = 1;
-	write(1, "\33[2K\r", 5);
+	rl_replace_line("", 0);
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
