@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 20:20:34 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/09/15 12:43:50 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/15 15:45:05 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	handle_fork_exec(t_tree *node, t_env *env, int input_fd, int *stat)
 {
 	int	pid;
 
+	node->fd = -1;
 	pid = fork();
 	if (pid == -1)
 		exit(EXIT_FAILURE);
