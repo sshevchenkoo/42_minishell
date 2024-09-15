@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 20:20:34 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/09/11 20:15:13 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/15 12:43:50 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void	handle_fork_exec(t_tree *node, t_env *env, int input_fd, int *stat)
 
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("fork");
 		exit(EXIT_FAILURE);
-	}
 	if (pid == 0)
 	{
 		if (input_fd != -1)
@@ -42,6 +39,7 @@ void	handle_fork_exec(t_tree *node, t_env *env, int input_fd, int *stat)
 	if (input_fd != -1)
 		close(input_fd);
 	waitpid(pid, stat, 0);
+	*stat = WEXITSTATUS(*stat);
 }
 
 void	close_and_exec_pipe(t_tree *n, t_env *e, int ifd, int *s)
@@ -84,6 +82,7 @@ void	handle_pipe(t_tree *node, t_env *env, int input_fd, int *stat)
 	close(pipefd[1]);
 	traverse_and_execute(node->right, env, pipefd[0], stat);
 	waitpid(pid, stat, 0);
+	*stat = WEXITSTATUS(*stat);
 	close(pipefd[0]);
 }
 

@@ -6,11 +6,12 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 14:02:41 by yashevch          #+#    #+#             */
-/*   Updated: 2024/09/12 17:10:22 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/14 19:57:19 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
+#include <readline/history.h>
 
 void	cleanup_shell(t_env *env, int status)
 {
@@ -20,6 +21,7 @@ void	cleanup_shell(t_env *env, int status)
 		free_env_var(env->parsed_env);
 		free(env);
 	}
+	clear_history();
 	exit(status);
 }
 

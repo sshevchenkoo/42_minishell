@@ -6,11 +6,12 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 20:16:21 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/09/11 12:17:56 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/15 12:43:33 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdlib.h>
 #include <sys/wait.h>
 #include <fcntl.h>
 
@@ -72,6 +73,7 @@ void	handle_heredoc(t_tree *node, t_env *env, int *stat)
 	print_string_to_fd(heredoc_input, pipefd[1]);
 	close(pipefd[1]);
 	waitpid(pid, stat, 0);
+	*stat = WEXITSTATUS(*stat);
 	free(heredoc_input);
 }
 
