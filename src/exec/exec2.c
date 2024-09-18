@@ -6,7 +6,7 @@
 /*   By: ukireyeu <ukireyeu@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 20:16:21 by ukireyeu          #+#    #+#             */
-/*   Updated: 2024/09/15 15:48:44 by ukireyeu         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:22:06 by ukireyeu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,11 @@ void	traverse_and_execute(t_tree *node, t_env *env, int input_fd, int *stat)
 	else if (node->type == REDIR_OUT || node->type == APPEND)
 		handle_redirection(node, env, input_fd, stat);
 	else if (node->type == REDIR_IN)
+	{
+		node->left->fd = -1;
 		handle_fork_exec(node->left, env,
 			open(node->right->content[0], O_RDONLY), stat);
+	}
 	else if (node->type == HEREDOC)
 		handle_heredoc(node, env, stat);
 }
